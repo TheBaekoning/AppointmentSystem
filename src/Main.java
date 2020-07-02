@@ -11,12 +11,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
         primaryStage.setTitle("C195 Appointment System");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
-
-        LoginController loginController = new LoginController();
-
-        loginController.loginValidation();
     }
 
 
