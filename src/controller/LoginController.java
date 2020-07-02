@@ -53,7 +53,7 @@ public class LoginController {
         } else {
             System.out.println("LOGIN FAILURE!");
             /** TODO: add in login error pop up for spanish and english based on location
-             * 
+             *
              */
         }
     }
