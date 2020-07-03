@@ -5,7 +5,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="424.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Appointment">
    <children>
       <ListView layoutX="59.0" layoutY="45.0" prefHeight="215.0" prefWidth="405.0" />
@@ -13,11 +12,12 @@
       <Button layoutX="132.0" layoutY="278.0" mnemonicParsing="false" text="Month" />
       <Text layoutX="59.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" />
       <Button layoutX="232.0" layoutY="278.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="All" />
-      <Button layoutX="501.0" layoutY="45.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" text="Add" />
-      <Button layoutX="501.0" layoutY="100.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" text="Update" />
+      <Button fx:id="addButton" layoutX="501.0" layoutY="45.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="26.0" prefWidth="73.0" text="Add" />
+      <Button fx:id="updateButton" layoutX="501.0" layoutY="100.0" mnemonicParsing="false" onAction="#updateAppointment" prefHeight="26.0" prefWidth="73.0" text="Update" />
       <Button layoutX="501.0" layoutY="153.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" text="Delete" />
       <Button layoutX="56.0" layoutY="342.0" mnemonicParsing="false" text="Local" />
       <Button layoutX="139.0" layoutY="342.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="UTC" />
       <Button layoutX="503.0" layoutY="278.0" mnemonicParsing="false" text="Reports" />
+      <Button fx:id="customerButton" layoutX="501.0" layoutY="212.0" mnemonicParsing="false" onAction="#customerButtonClicked" prefHeight="26.0" prefWidth="105.0" text="Customers" />
    </children>
 </AnchorPane>
