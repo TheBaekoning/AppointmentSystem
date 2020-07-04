@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="424.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Appointment">
+<AnchorPane prefHeight="424.0" prefWidth="677.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentController">
    <children>
       <ListView layoutX="59.0" layoutY="45.0" prefHeight="215.0" prefWidth="405.0" />
       <Button layoutX="59.0" layoutY="278.0" mnemonicParsing="false" text="Week" />

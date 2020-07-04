@@ -50,16 +50,21 @@ public class LoginController {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-            Appointment appointment = loader.getController();
+            AppointmentController appointmentController = loader.getController();
             User userData = new User();
             userData.setUsername(result.getString("userName"));
             userData.setUserId(result.getInt("userId"));
-            appointment.setUserData(userData);
+            appointmentController.setUserData(userData);
         } else {
             System.out.println("LOGIN FAILURE!");
             /** TODO: add in login error pop up for spanish and english based on location
              *
              */
+
+
+            System.out.println("Closing Connection");
+            connection.close();
+
         }
     }
 }

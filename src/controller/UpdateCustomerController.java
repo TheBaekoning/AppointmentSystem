@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AddCustomer {
+public class UpdateCustomerController {
     @FXML
     Button cancelButton;
 

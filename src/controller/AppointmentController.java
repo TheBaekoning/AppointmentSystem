@@ -10,7 +10,7 @@ import model.User;
 
 import java.io.IOException;
 
-public class Appointment {
+public class AppointmentController {
     private static User userData;
     @FXML
     Button addButton;
@@ -54,6 +54,7 @@ public class Appointment {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        CustomerController customerController = loader.getController();
     }
 
     public void setUserData(User user){
