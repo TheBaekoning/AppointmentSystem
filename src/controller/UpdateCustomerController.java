@@ -16,6 +16,8 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -112,8 +114,65 @@ public class UpdateCustomerController implements Initializable {
         idResult.next();
         customerId = idResult.getInt("customerId");
 
-        System.out.println(customerId);
 
+    }
+
+    public void clickedUpdateButton() throws SQLException, IOException {
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        Statement statement;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                "U0600d", "53688664081");
+        statement = connection.createStatement();
+
+
+        if (!customer.getName().equals(nameBox.getText())){
+            System.out.println("NAME");
+            statement.execute("UPDATE customer\n" +
+                    "SET customerName = '" + nameBox.getText() + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                    "' WHERE customerId =" + customerId + ";");
+        }
+
+        if (!address.equals(addressBox.getText())){
+            System.out.println("address");
+            statement.execute("UPDATE address\n" +
+                    "SET address = '" + addressBox.getText() + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                    "' WHERE addressId = (SELECT addressId FROM customer WHERE customerId = " + customerId + ");");
+        }
+
+        if (!address2.equals(address2Box.getText())){
+            System.out.println("address2");
+            statement.execute("UPDATE address\n" +
+                    "SET address2 = '" + address2Box.getText() + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                    "' WHERE addressId = (SELECT addressId FROM customer WHERE customerId = " + customerId + ");");
+        }
+
+        if (!phoneNumber.equals(phoneBox.getText())){
+            System.out.println("Phone");
+            statement.execute("UPDATE address\n" +
+                    "SET phone = '" + phoneBox.getText() + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                    "' WHERE addressId = (SELECT addressId FROM customer WHERE customerId = " + customerId + ");");
+        }
+
+        if (!zipCode.equals(zipBox.getText())){
+            System.out.println("zip");
+            statement.execute("UPDATE address\n" +
+                    "SET postalCode = '" + zipBox.getText() + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                    "' WHERE addressId = (SELECT addressId FROM customer WHERE customerId = " + customerId + ");");
+        }
+
+        int cityId;
+        ResultSet cityResult = statement.executeQuery("SELECT cityId\n" +
+                "FROM city\n" +
+                "WHERE city = '" + cityDropDown.getSelectionModel().getSelectedItem().toString() + "'");
+
+        cityResult.next();
+        cityId = cityResult.getInt("cityId");
+
+
+        statement.execute("UPDATE address\n" +
+                "SET cityId = '" + cityId + "', lastUpdate = '" + time + "', lastUpdateBy = '" + AppointmentController.userData.getUsername()  +
+                "' WHERE addressId = (SELECT addressId FROM customer WHERE customerId = " + customerId + ");");
+        cancelButtonClicked();
     }
 
     @Override

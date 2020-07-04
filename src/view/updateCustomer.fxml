@@ -18,7 +18,7 @@
       <ComboBox fx:id="cityDropDown" layoutX="342.0" layoutY="184.0" prefWidth="150.0" />
       <Text layoutX="342.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
       <Text layoutX="342.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" />
-      <Button fx:id="updateButton" layoutX="48.0" layoutY="355.0" mnemonicParsing="false" text="Update Customer" />
+      <Button fx:id="updateButton" layoutX="48.0" layoutY="355.0" mnemonicParsing="false" onAction="#clickedUpdateButton" text="Update Customer" />
       <Button fx:id="cancelButton" layoutX="520.0" layoutY="355.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
       <TextField fx:id="address2Box" layoutX="53.0" layoutY="227.0" />
       <Text layoutX="53.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address 2" />

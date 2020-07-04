@@ -93,7 +93,7 @@ public class CustomerController implements Initializable {
 
     public void deleteCustomerClicked() throws SQLException {
         customerTable.getSelectionModel().getSelectedItem();
-        Long count = 0L;
+        long count = 0L;
         Statement statement;
 
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
@@ -194,6 +194,7 @@ public class CustomerController implements Initializable {
                     result.getString("postalCode"),
                     result.getString("city"),
                     result.getString("country"));
+            customer.setPhoneNumber(result.getString("phone"));
             customerList.add(customer);
         }
 

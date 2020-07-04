@@ -56,22 +56,26 @@ public class AddCustomerController implements Initializable {
     public void addCustomer() throws SQLException, IOException {
         Statement statement;
         ResultSet result, cityResult;
+        int cityId;
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
         statement = connection.createStatement();
+
+        cityResult = statement.executeQuery("SELECT cityId\n" +
+                "FROM city\n" +
+                "WHERE city = '" + cityDropDown.getSelectionModel().getSelectedItem().toString() + "'");
+
+        cityResult.next();
+        cityId = cityResult.getInt("cityId");
+
         result = statement.executeQuery("SELECT addressId FROM address " +
-                "WHERE address = '" + addressBox.getText() + "' AND '" + address2Box.getText() + "'");
+                "WHERE address = '" + addressBox.getText() + "' AND address2 = '" + address2Box.getText()
+                + "' AND postalCode = '" + zipBox.getText() + "' AND phone = '" + phoneBox.getText() + "' AND cityId =" + cityId);
         if (!result.next()) {
-            cityResult = statement.executeQuery("SELECT cityId\n" +
-                    "FROM city\n" +
-                    "WHERE city = '" + cityDropDown.getSelectionModel().getSelectedItem().toString() + "'");
-
-            cityResult.next();
-
             statement.execute("INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy)" +
                     "VALUES( '" + addressBox.getText() + "', '" +
-                    address2Box.getText() + "', " + cityResult.getInt("cityId") + ", '" + zipBox.getText() + "', '" + phoneBox.getText() +
+                    address2Box.getText() + "', " + cityId + ", '" + zipBox.getText() + "', '" + phoneBox.getText() +
                     "', '" + time + "', '" + AppointmentController.userData.getUsername() + "', '" + time + "', '" + AppointmentController.userData.getUsername() + "')");
 
             result = statement.executeQuery("SELECT addressId FROM address " +
