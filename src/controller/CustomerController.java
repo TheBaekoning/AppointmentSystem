@@ -17,6 +17,9 @@ import model.Customer;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -114,20 +117,24 @@ public class CustomerController implements Initializable {
             Integer isDeleted = statement.executeUpdate("DELETE\n" +
                     "FROM customer\n" +
                     "WHERE customerName = " + "'" + customerTable.getSelectionModel().getSelectedItem().getName() + "'");
-            if (isDeleted > 0)
+            if (isDeleted > 0) {
                 System.out.println("DELETE SUCCESSFUL!");
-            else {
+                customerListObservable.remove(
+                        customerList.stream()
+                                .filter(x -> x.getName() == customerTable.getSelectionModel().getSelectedItem().getName())
+                                .findFirst().get());
+            } else {
                 System.out.println("ERROR: Delete not successful!");
             }
         } else {
             statement = connection.createStatement();
             ResultSet result;
-            String addressId;
+            Integer addressId;
             result = statement.executeQuery("SELECT addressId\n" +
                     "FROM customer\n" +
                     "WHERE customerName = " + "'" + customerTable.getSelectionModel().getSelectedItem().getName() + "'");
             result.next();
-            addressId = result.getString("addressId");
+            addressId = result.getInt("addressId");
             Integer isDeleted = statement.executeUpdate("DELETE\n" +
                     "FROM customer\n" +
                     "WHERE customerName = " + "'" + customerTable.getSelectionModel().getSelectedItem().getName() + "'");
@@ -138,7 +145,7 @@ public class CustomerController implements Initializable {
             }
             isDeleted = statement.executeUpdate("DELETE\n" +
                     "FROM address\n" +
-                    "WHERE addressId = " + "'" + addressId + "'");
+                    "WHERE addressId = " + addressId );
             if (isDeleted > 0) {
                 System.out.println("ADDRESS DELETE SUCCESSFUL!");
 
@@ -151,11 +158,9 @@ public class CustomerController implements Initializable {
                         customerList.stream()
                                 .filter(x -> x.getName() == customerTable.getSelectionModel().getSelectedItem().getName())
                                 .findFirst().get());
-            }
-            else {
+            } else {
                 System.out.println("ERROR: Delete not successful! (Address)");
-
-
+                connection.close();
             }
 
         }
