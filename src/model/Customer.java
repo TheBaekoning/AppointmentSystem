@@ -3,10 +3,15 @@ package model;
 public class Customer {
     private String name;
     private String address;
+    private String address2;
     private String phoneNumber;
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress2(String address) {
+        this.address2 = address;
     }
 
     public void setName(String name) {
@@ -27,5 +32,9 @@ public class Customer {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getAddress2() {
+        return address2;
     }
 }

@@ -78,7 +78,7 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
-    public void updateCustomerClicked() throws IOException {
+    public void updateCustomerClicked() throws IOException, SQLException {
         Stage stage;
         Parent root;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/updateCustomer.fxml"));
@@ -87,6 +87,8 @@ public class CustomerController implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        UpdateCustomerController updateCustomerController = loader.getController();
+        updateCustomerController.setCustomer(customerTable.getSelectionModel().getSelectedItem());
     }
 
     public void deleteCustomerClicked() throws SQLException {
