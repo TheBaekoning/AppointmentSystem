@@ -8,17 +8,21 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="408.0" prefWidth="617.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UpdateCustomerController">
    <children>
-      <TextField layoutX="53.0" layoutY="83.0" />
-      <TextField layoutX="53.0" layoutY="184.0" />
-      <TextField layoutX="53.0" layoutY="288.0" />
-      <Text layoutX="53.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+      <TextField fx:id="nameBox" layoutX="53.0" layoutY="83.0" />
+      <TextField fx:id="addressBox" layoutX="53.0" layoutY="156.0" />
+      <TextField fx:id="phoneBox" layoutX="53.0" layoutY="288.0" />
+      <Text layoutX="53.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
       <Text layoutX="53.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="53.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" />
-      <ComboBox layoutX="342.0" layoutY="83.0" prefWidth="150.0" />
-      <ComboBox layoutX="342.0" layoutY="184.0" prefWidth="150.0" />
+      <ComboBox fx:id="countryDropDown" layoutX="342.0" layoutY="83.0" prefWidth="150.0" />
+      <ComboBox fx:id="cityDropDown" layoutX="342.0" layoutY="184.0" prefWidth="150.0" />
       <Text layoutX="342.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
       <Text layoutX="342.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" />
-      <Button layoutX="48.0" layoutY="355.0" mnemonicParsing="false" text="Update Customer" />
+      <Button fx:id="updateButton" layoutX="48.0" layoutY="355.0" mnemonicParsing="false" text="Update Customer" />
       <Button fx:id="cancelButton" layoutX="520.0" layoutY="355.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
+      <TextField fx:id="address2Box" layoutX="53.0" layoutY="227.0" />
+      <Text layoutX="53.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address 2" />
+      <TextField fx:id="zipBox" layoutX="342.0" layoutY="290.0" />
+      <Text layoutX="342.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
    </children>
 </AnchorPane>

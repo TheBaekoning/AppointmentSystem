@@ -11,7 +11,7 @@ import model.User;
 import java.io.IOException;
 
 public class AppointmentController {
-    private static User userData;
+    public static User userData;
     @FXML
     Button addButton;
     @FXML

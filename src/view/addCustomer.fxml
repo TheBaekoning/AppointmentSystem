@@ -14,7 +14,7 @@
       <Text layoutX="43.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
       <Text layoutX="43.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="43.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact" />
-      <ComboBox fx:id="countryDropDown" layoutX="332.0" layoutY="73.0" prefWidth="150.0" />
+      <ComboBox fx:id="countryDropDown" layoutX="332.0" layoutY="73.0" onAction="#clickedCountryDropDown" prefWidth="150.0" />
       <ComboBox fx:id="cityDropDown" layoutX="332.0" layoutY="174.0" prefWidth="150.0" />
       <Text layoutX="332.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country" />
       <Text layoutX="332.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="City" />

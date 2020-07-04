@@ -40,6 +40,7 @@ public class AddCustomerController implements Initializable {
     TextField zipBox;
 
     private List<String> countryList = new ArrayList<>();
+    private List<String> cityList = new ArrayList<>();
 
     public void cancelButtonClicked() throws IOException {
         Stage stage;
@@ -54,19 +55,24 @@ public class AddCustomerController implements Initializable {
 
     public void addCustomer() throws SQLException, IOException {
         Statement statement;
-        ResultSet result;
+        ResultSet result, cityResult;
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
         statement = connection.createStatement();
-
         result = statement.executeQuery("SELECT addressId FROM address " +
                 "WHERE address = '" + addressBox.getText() + "' AND '" + address2Box.getText() + "'");
         if (!result.next()) {
+            cityResult = statement.executeQuery("SELECT cityId\n" +
+                    "FROM city\n" +
+                    "WHERE city = '" + cityDropDown.getSelectionModel().getSelectedItem().toString() + "'");
+
+            cityResult.next();
+
             statement.execute("INSERT INTO address(address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy)" +
                     "VALUES( '" + addressBox.getText() + "', '" +
-                    address2Box.getText() + "', " + 1 + ", '" + zipBox.getText() + "', '" + phoneBox.getText() +
-                    "', '" + time + "', '" + "test" + "', '" + time + "', '" + "test" + "')");
+                    address2Box.getText() + "', " + cityResult.getInt("cityId") + ", '" + zipBox.getText() + "', '" + phoneBox.getText() +
+                    "', '" + time + "', '" + AppointmentController.userData.getUsername() + "', '" + time + "', '" + AppointmentController.userData.getUsername() + "')");
 
             result = statement.executeQuery("SELECT addressId FROM address " +
                     "WHERE address = '" + addressBox.getText() + "' AND address2 = '" + address2Box.getText() + "'");
@@ -75,18 +81,40 @@ public class AddCustomerController implements Initializable {
             statement.execute("INSERT INTO customer(CUSTOMERNAME, ADDRESSID, ACTIVE," +
                     " CREATEDATE, CREATEDBY, LASTUPDATE, LASTUPDATEBY)\n" +
                     "VALUES " + "('" + nameBox.getText() + "', " + result.getInt("addressId") + ", " + "1" + ", '" +
-                    time + "', '" + "test" + "', '" + time + "', '" +
-                    "test" + "');");
+                    time + "', '" + AppointmentController.userData.getUsername() + "', '" + time + "', '" +
+                    AppointmentController.userData.getUsername() + "');");
         } else {
             statement.execute("INSERT INTO customer(CUSTOMERNAME, ADDRESSID, ACTIVE," +
                     " CREATEDATE, CREATEDBY, LASTUPDATE, LASTUPDATEBY)\n" +
                     "VALUES " + "('" + nameBox.getText() + "', " + "1" + ", " + "1" + ", '" +
-                    time + "', '" + "test" + "', '" + time + "', '" +
-                    "test" + "');");
+                    time + "', '" + AppointmentController.userData.getUsername() + "', '" + time + "', '" +
+                    AppointmentController.userData.getUsername() + "');");
         }
         connection.close();
         cancelButtonClicked();
 
+    }
+
+    public void clickedCountryDropDown() throws SQLException {
+        if (!cityList.isEmpty()) {
+            cityList.clear();
+        }
+        Statement statement;
+        ResultSet result, countryIdResult;
+        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                "U0600d", "53688664081");
+        statement = connection.createStatement();
+        countryIdResult = statement.executeQuery("SELECT * FROM country WHERE country = '"
+                + countryDropDown.getSelectionModel().getSelectedItem().toString() + "'");
+        countryIdResult.next();
+        result = statement.executeQuery("SELECT * FROM city WHERE countryId = " + countryIdResult.getInt("countryId"));
+
+        while (result.next()) {
+            cityList.add(result.getString("city"));
+        }
+        ObservableList cityListObservable = FXCollections.observableList(cityList);
+        cityDropDown.setItems(cityListObservable);
+        connection.close();
     }
 
     @Override
@@ -99,16 +127,15 @@ public class AddCustomerController implements Initializable {
             statement = connection.createStatement();
             result = statement.executeQuery("SELECT * FROM country");
 
-            while(result.next()){
-                String country = "";
+            while (result.next()) {
                 countryList.add(result.getString("country"));
             }
             ObservableList countryListObservable = FXCollections.observableList(countryList);
             countryDropDown.setItems(countryListObservable);
+            connection.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
     }
 }
