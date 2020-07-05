@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ import model.User;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.Locale;
 
 public class LoginController {
     @FXML
@@ -21,6 +23,10 @@ public class LoginController {
     TextField loginPassword;
 
     @FXML
+
+    /**
+     * validates log in and matches inputted username and password to what is held in the database.
+     */
     public void loginValidation() throws SQLException, IOException {
         Statement statement;
         boolean loginCheck = false;
@@ -56,15 +62,33 @@ public class LoginController {
             userData.setUserId(result.getInt("userId"));
             appointmentController.setUserData(userData);
         } else {
-            System.out.println("LOGIN FAILURE!");
-            /** TODO: add in login error pop up for spanish and english based on location
-             *
-             */
-
-
-            System.out.println("Closing Connection");
-            connection.close();
-
+            popMessage();
         }
+        System.out.println("Closing Connection");
+        connection.close();
+    }
+
+    /**
+    * Pop up message if the username and password does not match to one held in Database. Will currently match US or FR (english / french)
+     */
+    private void popMessage() {
+        Locale currentLocale = Locale.getDefault()   ;
+        if (currentLocale.getCountry().equals("US")); {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Incorrect Password");
+            alert.setHeaderText("Username And Password Incorrect");
+            alert.setContentText("Please Try Again");
+            alert.showAndWait();
+
+        };
+        if (currentLocale.getCountry().equals("FR")) {
+            System.out.println(currentLocale.getCountry());
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Mot de passe incorrect");
+            alert.setHeaderText("Nom d'utilisateur et mot de passe incorrects");
+            alert.setContentText("Veuillez réessayer");
+            alert.showAndWait();
+        }
+
     }
 }

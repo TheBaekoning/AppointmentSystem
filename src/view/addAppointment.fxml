@@ -10,20 +10,18 @@
 <AnchorPane prefHeight="640.0" prefWidth="611.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddAppointment">
    <children>
       <Text layoutX="48.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer" />
-      <TableView layoutX="48.0" layoutY="77.0" prefHeight="200.0" prefWidth="516.0">
+      <TableView fx:id="customerTable" layoutX="48.0" layoutY="77.0" prefHeight="200.0" prefWidth="516.0">
         <columns>
-          <TableColumn prefWidth="150.0" text="Name" />
-          <TableColumn minWidth="0.0" prefWidth="193.0" text="Address" />
-            <TableColumn prefWidth="172.0" text="Contact" />
+          <TableColumn fx:id="nameColumn" prefWidth="515.0" text="Name" />
         </columns>
       </TableView>
-      <TextField layoutX="48.0" layoutY="377.0" />
-      <TextField layoutX="393.0" layoutY="377.0" />
+      <TextField fx:id="startBox" layoutX="48.0" layoutY="377.0" />
+      <TextField fx:id="endBox" layoutX="393.0" layoutY="377.0" />
       <Text layoutX="48.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start" />
       <Text layoutX="393.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End" />
-      <TextField layoutX="48.0" layoutY="465.0" />
+      <TextField fx:id="typeBox" layoutX="48.0" layoutY="465.0" />
       <Text layoutX="48.0" layoutY="438.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type" />
-      <Button layoutX="33.0" layoutY="585.0" mnemonicParsing="false" text="Add Appointment" />
+      <Button fx:id="addButton" layoutX="33.0" layoutY="585.0" mnemonicParsing="false" onAction="#onClickAddAppointment" text="Add Appointment" />
       <Button fx:id="cancelButton" layoutX="517.0" layoutY="585.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
    </children>
 </AnchorPane>

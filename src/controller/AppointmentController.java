@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -111,8 +112,38 @@ public class AppointmentController implements Initializable {
 
     }
 
-    public void customerDetailButtonClicked() {
+    public void customerDetailButtonClicked() throws SQLException {
+        Customer customer = new Customer();
+        Statement statement;
+        ResultSet result;
 
+        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                "U0600d", "53688664081");
+
+        statement = connection.createStatement();
+        result = statement.executeQuery("SELECT * FROM " +
+                "( SELECT a.address, a.address2, a.postalCode, a.phone, c.customerId, c.customerName, c2.city, c3.country " +
+                "FROM customer AS c " +
+                "INNER JOIN address a on c.addressId = a.addressId " +
+                "INNER JOIN city c2 on a.cityId = c2.cityId " +
+                "INNER JOIN country c3 on c2.countryId = c3.countryId) as ca " +
+                "WHERE customerId = " + appointmentTable.getSelectionModel().getSelectedItem().getCustomerId());
+        result.next();
+
+        customer.setName(result.getString("customerName"));
+        customer.setAddress(result.getString("address"),
+                result.getString("address2"),
+                result.getString("postalCode"),
+                result.getString("city"),
+                result.getString("country"));
+        customer.setPhoneNumber(result.getString("phone"));
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Customer Details");
+        alert.setHeaderText(customer.getName());
+        alert.setContentText("Address: " + customer.getAddress() + "\n" +
+                "Phone: " + customer.getPhoneNumber());
+        alert.showAndWait();
     }
 
     public void setUserData(User user){
