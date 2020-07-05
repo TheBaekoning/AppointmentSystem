@@ -36,8 +36,6 @@ public class CustomerController implements Initializable {
     public TableColumn customerAddress;
     public TableColumn customerPhone;
 
-    private static Boolean isInitialized = false;
-
     private List<Customer> customerList = new ArrayList<>();
     private final ObservableList<Customer> customerListObservable = FXCollections.observableList(customerList);
 

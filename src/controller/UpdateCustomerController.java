@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customer;
+import util.TimeConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -118,7 +119,7 @@ public class UpdateCustomerController implements Initializable {
     }
 
     public void clickedUpdateButton() throws SQLException, IOException {
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        String time = new TimeConverter().getUtcTime();
         Statement statement;
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");

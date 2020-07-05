@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import util.TimeConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,7 +58,8 @@ public class AddCustomerController implements Initializable {
         Statement statement;
         ResultSet result, cityResult;
         int cityId;
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        TimeConverter timeConverter = new TimeConverter();
+        String time = timeConverter.getUtcTime();
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
         statement = connection.createStatement();

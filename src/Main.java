@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import util.TimeConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +18,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
 
-        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        String time = new TimeConverter().getUtcTime();
+        System.out.println(time);
 
     }
 
