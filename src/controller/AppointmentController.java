@@ -174,6 +174,7 @@ public class AppointmentController implements Initializable {
             appointment.setStartTime(result.getString("start"));
             appointment.setEndTime(result.getString("end"));
             appointmentList.add(appointment);
+            System.out.println(appointmentObservableList.size());
         }
 
         connection.close();
@@ -216,6 +217,54 @@ public class AppointmentController implements Initializable {
 
             timeLabel.setText("Current Time Zone: UTC");
         }
+    }
+
+    public void appointmentWeek() throws SQLException {
+        clickUtc();
+        List<Appointment> tempList = new ArrayList<>();
+        TimeConverter time = new TimeConverter();
+        appointmentObservableList.clear();
+        appointmentList.clear();
+
+        populateList();
+
+        appointmentList.forEach(x -> {
+            if(time.isCurrentWeek(x.getStartTime()))
+                tempList.add(x);
+        });
+
+        appointmentList.clear();
+        appointmentObservableList.clear();
+
+        appointmentList.addAll(tempList);
+    }
+
+    public void appointmentMonth() throws SQLException {
+        clickUtc();
+        List<Appointment> tempList = new ArrayList<>();
+        TimeConverter time = new TimeConverter();
+        appointmentObservableList.clear();
+        appointmentList.clear();
+
+        populateList();
+
+        appointmentList.forEach(x -> {
+            if(time.isCurrentMonth(x.getStartTime()))
+                tempList.add(x);
+        });
+
+        appointmentList.clear();
+        appointmentObservableList.clear();
+
+        appointmentList.addAll(tempList);
+    }
+
+    public void appointmentAll() throws SQLException {
+        clickUtc();
+        appointmentList.add(new Appointment());
+        appointmentObservableList.clear();
+        appointmentList.clear();
+        populateList();
     }
 
     @Override

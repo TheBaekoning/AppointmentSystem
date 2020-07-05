@@ -1,13 +1,9 @@
-import controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.TimeConverter;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Main extends Application {
 
@@ -18,10 +14,10 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
 
-        String time = new TimeConverter().getLocalTime();
-        String convert = new TimeConverter().convertDefaultToUtc(time);
-        System.out.println(convert);
+        TimeConverter time = new TimeConverter();
+        String current = "2020-07-12";
 
+        System.out.println(time.isCurrentWeek(current));
     }
 
 

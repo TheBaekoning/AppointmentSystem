@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.WeekFields;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class TimeConverter {
@@ -58,5 +61,36 @@ public class TimeConverter {
             alert.showAndWait();
             throw new Exception("Outside of Business Hours");
         }
+    }
+
+    public boolean isCurrentMonth(String validate) {
+        String newValidate = LocalDateTime.parse(validate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        String localDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        return localDate.equals(newValidate);
+    }
+
+    public boolean isCurrentWeek(String validate) {
+        int day, month, year; // comparing dates
+        int cDay, cMonth, cYear; // current dates
+        String currentDate = getLocalTime();
+
+        year = Integer.parseInt(validate.substring(0,4));
+        month = Integer.parseInt(validate.substring(5,7));
+        day = Integer.parseInt(validate.substring(8,10));
+
+        cYear = Integer.parseInt(currentDate.substring(0,4));
+        cMonth = Integer.parseInt(currentDate.substring(5,7));
+        cDay = Integer.parseInt(currentDate.substring(8,10));
+
+        Locale userLocale = Locale.getDefault();
+        WeekFields weekNumbering = WeekFields.of(userLocale);
+
+        LocalDate date = LocalDate.of(year, month, day);
+        LocalDate cDate = LocalDate.of(cYear, cMonth, cDay);
+        int compWeek = date.get(weekNumbering.weekOfWeekBasedYear());
+        int currentWeek = cDate.get(weekNumbering.weekOfWeekBasedYear());
+
+        return compWeek == currentWeek;
     }
 }

@@ -8,10 +8,10 @@
 
 <AnchorPane prefHeight="534.0" prefWidth="947.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AppointmentController">
    <children>
-      <Button layoutX="53.0" layoutY="402.0" mnemonicParsing="false" text="Week" />
-      <Button layoutX="126.0" layoutY="402.0" mnemonicParsing="false" text="Month" />
+      <Button layoutX="53.0" layoutY="402.0" mnemonicParsing="false" onAction="#appointmentWeek" text="Week" />
+      <Button layoutX="126.0" layoutY="402.0" mnemonicParsing="false" onAction="#appointmentMonth" text="Month" />
       <Text layoutX="59.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" />
-      <Button layoutX="226.0" layoutY="402.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="All" />
+      <Button layoutX="226.0" layoutY="402.0" mnemonicParsing="false" onAction="#appointmentAll" prefHeight="26.0" prefWidth="59.0" text="All" />
       <Button fx:id="addButton" layoutX="806.0" layoutY="37.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="26.0" prefWidth="73.0" text="Add" />
       <Button fx:id="updateButton" layoutX="806.0" layoutY="92.0" mnemonicParsing="false" onAction="#updateAppointment" prefHeight="26.0" prefWidth="73.0" text="Update" />
       <Button fx:id="deleteButton" layoutX="806.0" layoutY="145.0" mnemonicParsing="false" onAction="#onDeleteClicked" prefHeight="26.0" prefWidth="73.0" text="Delete" />
