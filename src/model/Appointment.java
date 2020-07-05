@@ -23,6 +23,10 @@ public class Appointment {
         return appointment;
     }
 
+    public void setAppointment(String appointment){
+        this.appointment = appointment;
+    }
+
     public void setAppointment() {
         appointment = startTime.toString() + " - " + endTime.toString();
     }

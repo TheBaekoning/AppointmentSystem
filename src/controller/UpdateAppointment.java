@@ -48,6 +48,8 @@ public class UpdateAppointment implements Initializable {
     }
 
     public void onClickUpdate() throws SQLException, IOException {
+        time.isValidDate(startBox.getText());
+        time.isValidDate(endBox.getText());
         Statement statement;
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
@@ -61,13 +63,13 @@ public class UpdateAppointment implements Initializable {
 
         if(!startBox.getText().isEmpty()){
             statement.execute("UPDATE appointment \n" +
-                    "SET start = '" + startBox.getText() + "' " +
+                    "SET start = '" + time.convertDefaultToUtc(startBox.getText()) + "' " +
                     "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
         }
 
         if(!endBox.getText().isEmpty()){
             statement.execute("UPDATE appointment \n" +
-                    "SET end = '" + endBox.getText() + "' " +
+                    "SET end = '" + time.convertDefaultToUtc(endBox.getText()) + "' " +
                     "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
         }
 

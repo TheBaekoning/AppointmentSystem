@@ -18,8 +18,9 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
 
-        String time = new TimeConverter().getUtcTime();
-        System.out.println(time);
+        String time = new TimeConverter().getLocalTime();
+        String convert = new TimeConverter().convertDefaultToUtc(time);
+        System.out.println(convert);
 
     }
 

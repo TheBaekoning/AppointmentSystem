@@ -19,6 +19,9 @@ import util.TimeConverter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,21 +55,27 @@ public class AddAppointment implements Initializable {
         stage.show();
     }
 
-    public void onClickAddAppointment() throws SQLException, IOException {
+    public void onClickAddAppointment() throws SQLException, IOException, DateTimeParseException, Exception {
         TimeConverter time = new TimeConverter();
         Statement statement;
         Appointment selectedAppointment = new Appointment();
         selectedAppointment = customerTable.getSelectionModel().getSelectedItem();
+
+        time.isValidDate(startBox.getText());
+        time.isValidDate(endBox.getText());
+        time.isBusinessHours(startBox.getText());
+        time.isBusinessHours(endBox.getText());
+
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
 
         statement = connection.createStatement();
         statement.execute("INSERT INTO appointment(customerId, userId, type, start, end, createDate, createdBy, lastUpdate, lastUpdateBy, title, description, location, contact, url)\n" +
                 "VALUES(" + selectedAppointment.getCustomerId() + ", " + AppointmentController.userData.getUserId()
-                + ", '" + typeBox.getText() + "', '" + startBox.getText() + "', '" + endBox.getText()
+                + ", '" + typeBox.getText() + "', '" + time.convertDefaultToUtc(startBox.getText()) + "', '" + time.convertDefaultToUtc(endBox.getText())
                 + "', '" + time.getUtcTime() + "', '" + AppointmentController.userData + "', '"
                 + time.getUtcTime() + "', '" + AppointmentController.userData
-                + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank"  + "', '" + "blank" + "');");
+                + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "');");
         cancelButtonClicked();
     }
 

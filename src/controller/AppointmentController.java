@@ -7,15 +7,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Customer;
 import model.User;
+import util.TimeConverter;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +33,9 @@ public class AppointmentController implements Initializable {
     Button updateButton;
     @FXML
     Button customerButton;
+    @FXML
+    Text timeLabel;
+
     public TableView<Appointment> appointmentTable;
     public TableColumn nameColumn;
     public TableColumn appointmentColumn;
@@ -42,19 +44,18 @@ public class AppointmentController implements Initializable {
     private List<Appointment> appointmentList = new ArrayList<>();
     private final ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(appointmentList);
 
-
     /**
      * used for converting utc/local and weekly/monthly views
      * *********************
      */
-    boolean isUtc;
-    boolean isLocal;
+    boolean isUtc = true;
+    boolean isLocal = false;
     boolean isMonthly;
     boolean isWeekly;
     boolean isAll;
 
     /**
-     ************************
+     * ***********************
      */
 
     public void addAppointment() throws IOException {
@@ -146,7 +147,7 @@ public class AppointmentController implements Initializable {
         alert.showAndWait();
     }
 
-    public void setUserData(User user){
+    public void setUserData(User user) {
         userData = user;
     }
 
@@ -177,6 +178,44 @@ public class AppointmentController implements Initializable {
 
         connection.close();
 
+    }
+
+    public void clickLocal() {
+        if(!isLocal){
+            List<Appointment> tempList = new ArrayList<>(appointmentList);
+            appointmentObservableList.clear();
+            appointmentList.clear();
+
+            tempList.forEach(x -> {
+                x.setStartTime(new TimeConverter().convertUtcToDefault(x.getStartTime()));
+                x.setEndTime(new TimeConverter().convertUtcToDefault(x.getEndTime()));
+                x.setAppointment();
+                appointmentList.add(x);
+            });
+            isUtc = false;
+            isLocal = true;
+
+            timeLabel.setText("Current Time Zone: Local");
+        }
+    }
+
+    public void clickUtc() {
+        if(!isUtc) {
+            List<Appointment> tempList = new ArrayList<>(appointmentList);
+            appointmentObservableList.clear();
+            appointmentList.clear();
+
+            tempList.forEach(x -> {
+                x.setStartTime(new TimeConverter().convertDefaultToUtc(x.getStartTime()));
+                x.setEndTime(new TimeConverter().convertDefaultToUtc(x.getEndTime()));
+                x.setAppointment();
+                appointmentList.add(x);
+            });
+            isUtc = true;
+            isLocal = false;
+
+            timeLabel.setText("Current Time Zone: UTC");
+        }
     }
 
     @Override

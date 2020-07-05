@@ -15,8 +15,8 @@
       <Button fx:id="addButton" layoutX="806.0" layoutY="37.0" mnemonicParsing="false" onAction="#addAppointment" prefHeight="26.0" prefWidth="73.0" text="Add" />
       <Button fx:id="updateButton" layoutX="806.0" layoutY="92.0" mnemonicParsing="false" onAction="#updateAppointment" prefHeight="26.0" prefWidth="73.0" text="Update" />
       <Button fx:id="deleteButton" layoutX="806.0" layoutY="145.0" mnemonicParsing="false" onAction="#onDeleteClicked" prefHeight="26.0" prefWidth="73.0" text="Delete" />
-      <Button layoutX="50.0" layoutY="466.0" mnemonicParsing="false" text="Local" />
-      <Button layoutX="133.0" layoutY="466.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="55.0" text="UTC" />
+      <Button fx:id="localButton" layoutX="50.0" layoutY="466.0" mnemonicParsing="false" onAction="#clickLocal" text="Local" />
+      <Button fx:id="utcButton" layoutX="133.0" layoutY="466.0" mnemonicParsing="false" onAction="#clickUtc" prefHeight="26.0" prefWidth="55.0" text="UTC" />
       <Button layoutX="808.0" layoutY="270.0" mnemonicParsing="false" text="Reports" />
       <Button fx:id="customerButton" layoutX="806.0" layoutY="204.0" mnemonicParsing="false" onAction="#customerButtonClicked" prefHeight="26.0" prefWidth="105.0" text="Customers" />
       <TableView fx:id="appointmentTable" layoutX="50.0" layoutY="53.0" prefHeight="321.0" prefWidth="730.0">
@@ -27,5 +27,6 @@
         </columns>
       </TableView>
       <Button fx:id="customerDetailButton" layoutX="605.0" layoutY="402.0" mnemonicParsing="false" onAction="#customerDetailButtonClicked" prefHeight="26.0" prefWidth="175.0" text="Customer Detail" />
+      <Text fx:id="timeLabel" layoutX="50.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current Time Zone: UTC" />
    </children>
 </AnchorPane>
