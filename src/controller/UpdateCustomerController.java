@@ -148,7 +148,7 @@ public class UpdateCustomerController implements Initializable {
             alert.setContentText("Please enter a valid name and try again");
             alert.showAndWait();
             throw (new CustomException("INVALID CHARACTERS"));
-        }
+        } /**
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                 "U0600d", "53688664081");
         Statement statement;
@@ -165,7 +165,7 @@ public class UpdateCustomerController implements Initializable {
             throw (new CustomException("CUSTOMER DOES NOT EXIST"));
         } else {
             customerId = result.getInt("customerId");
-        }
+        } **/
 
     }
 

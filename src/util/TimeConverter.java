@@ -1,6 +1,7 @@
 package util;
 
 import javafx.scene.control.Alert;
+import model.Appointment;
 
 import java.text.ParseException;
 import java.time.*;
@@ -8,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.WeekFields;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class TimeConverter {
@@ -16,7 +18,7 @@ public class TimeConverter {
      * @return
      */
     public String getLocalTime() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
@@ -24,7 +26,7 @@ public class TimeConverter {
      * @return
      */
     public String getUtcTime() {
-        return LocalDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+        return LocalDateTime.now(ZoneId.of("UTC")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
@@ -136,7 +138,7 @@ public class TimeConverter {
      * @return
      * @throws ParseException
      */
-    private ZonedDateTime dateConverter(String time) throws ParseException {
+    public ZonedDateTime dateConverter(String time) throws ParseException {
         return ZonedDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()));
     }
 
@@ -162,4 +164,35 @@ public class TimeConverter {
         if(date1.isBefore(date4) && date3.isBefore(date2))
             throw(new CustomException("OVERLAPPING TIME"));
     }
+
+    public void loginCheck(List<Appointment> appointment) {
+        String currentDayHour;
+        String currentTime = getUtcTime();
+        String minute = currentTime.substring(14,16);
+        currentDayHour = currentTime.substring(0,13);
+        int minuteMin = Integer.parseInt(minute);
+        int minuteMax = minuteMin + 15;
+
+        appointment.forEach(x -> {
+            String appointmentMinute = x.getStartTime().substring(14,16);
+            int appointmentMin = Integer.parseInt(appointmentMinute);
+            System.out.println(minuteMin + " < = " + appointmentMin + " > = " + minuteMax + " AND " + x.getStartTime().substring(0,13));
+            if (x.getStartTime().substring(0,13).equals(currentDayHour) && (
+                    minuteMin <= appointmentMin && minuteMax >= appointmentMin
+            ) ){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Upcoming Appointment Within 15 Minutes");
+                alert.setHeaderText("You have an appointment starting in 15 minutes");
+                alert.setContentText("Did I mention that an appointment will start within 15 minutes?");
+                alert.showAndWait();
+            }
+        });
+
+
+
+        System.out.println(minuteMin + " - " + minuteMax);
+        System.out.println(currentDayHour);
+        System.out.println(getUtcTime());
+    }
+
 }

@@ -84,7 +84,7 @@ public class AddAppointment implements Initializable {
             statement = connection.createStatement();
             statement.execute("INSERT INTO appointment(customerId, userId, type, start, end, createDate, createdBy, lastUpdate, lastUpdateBy, title, description, location, contact, url)\n" +
                     "VALUES(" + selectedAppointment.getCustomerId() + ", " + AppointmentController.userData.getUserId()
-                    + ", '" + typeBox.getText() + "', '" + time.convertDefaultToUtc(startBox.getText()) + "', '" + time.convertDefaultToUtc(endBox.getText())
+                    + ", '" + typeBox.getText() + "', '" + startBox.getText() + "', '" + endBox.getText()
                     + "', '" + time.getUtcTime() + "', '" + AppointmentController.userData + "', '"
                     + time.getUtcTime() + "', '" + AppointmentController.userData
                     + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "');");

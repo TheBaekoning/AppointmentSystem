@@ -78,24 +78,31 @@ public class LoginController implements Initializable {
                 File log = new File("user_login_logs.txt");
                 if (log.createNewFile()) {
                     System.out.println("File created: " + log.getName());
+                    try {
+                        FileWriter fileWriter = new FileWriter("user_login_logs.txt");
+                        fileWriter.write("USER: " + userData.getUsername() + " LOGGED AT: " + new TimeConverter().getUtcTime());
+                        fileWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
                 } else {
                     System.out.println("File already exists.");
+                    try {
+                        FileWriter fileWriter = new FileWriter("user_login_logs.txt", true);
+                        fileWriter.write("\nUSER: " + userData.getUsername() + " LOGGED AT: " + new TimeConverter().getUtcTime());
+                        fileWriter.close();
+                        System.out.println("Successfully wrote to the file.");
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
             }
-
-            try {
-                FileWriter fileWriter = new FileWriter("user_login_logs.txt");
-                fileWriter.write("USER: " + userData.getUsername() + " LOGGED AT: " + new TimeConverter().getUtcTime());
-                fileWriter.close();
-                System.out.println("Successfully wrote to the file.");
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-
         } else {
             popMessage();
         }
@@ -108,8 +115,7 @@ public class LoginController implements Initializable {
      */
     private void popMessage() {
         Locale currentLocale = Locale.getDefault();
-        if (currentLocale.getCountry().equals("US")) ;
-        {
+        if (currentLocale.getCountry().equals("US")){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Incorrect Password");
             alert.setHeaderText("Username And Password Incorrect");
@@ -117,7 +123,6 @@ public class LoginController implements Initializable {
             alert.showAndWait();
 
         }
-        ;
         if (currentLocale.getCountry().equals("FR")) {
             System.out.println(currentLocale.getCountry());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);

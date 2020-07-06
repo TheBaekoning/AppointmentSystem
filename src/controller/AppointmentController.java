@@ -36,6 +36,8 @@ public class AppointmentController implements Initializable {
     @FXML
     Text timeLabel;
 
+    private static boolean isInitialized = false;
+
     public TableView<Appointment> appointmentTable;
     public TableColumn nameColumn;
     public TableColumn appointmentColumn;
@@ -342,5 +344,11 @@ public class AppointmentController implements Initializable {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         appointmentTable.setItems(appointmentObservableList);
+
+        if(!isInitialized) {
+            TimeConverter time = new TimeConverter();
+            time.loginCheck(appointmentList);
+        }
+
     }
 }

@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.TimeConverter;
 
+import java.sql.Time;
 import java.util.Locale;
 
 public class Main extends Application {
@@ -16,12 +17,6 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.show();
 
-        TimeConverter time = new TimeConverter();
-        String current = "2020-07-12";
-
-
-
-        System.out.println(time.isCurrentWeek(current));
     }
 
 

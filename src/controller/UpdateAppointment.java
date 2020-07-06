@@ -66,13 +66,16 @@ public class UpdateAppointment implements Initializable {
      * @throws SQLException
      * @throws IOException
      */
-    public void onClickUpdate() throws SQLException, IOException {
+    public void onClickUpdate() throws SQLException, IOException, Exception {
         try {
             for (int i = 0; i < compareList.size(); i++)
                 time.isOverlap(startBox.getText(), endBox.getText(), compareList.get(i).getStartTime(), compareList.get(i).getEndTime());
 
             time.isValidDate(startBox.getText());
             time.isValidDate(endBox.getText());
+            time.isBusinessHours(startBox.getText());
+            time.isBusinessHours(endBox.getText());
+
             Statement statement;
             Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
                     "U0600d", "53688664081");
@@ -86,13 +89,13 @@ public class UpdateAppointment implements Initializable {
 
             if (!startBox.getText().isEmpty()) {
                 statement.execute("UPDATE appointment \n" +
-                        "SET start = '" + time.convertDefaultToUtc(startBox.getText()) + "' " +
+                        "SET start = '" + startBox.getText() + "' " +
                         "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
             }
 
             if (!endBox.getText().isEmpty()) {
                 statement.execute("UPDATE appointment \n" +
-                        "SET end = '" + time.convertDefaultToUtc(endBox.getText()) + "' " +
+                        "SET end = '" + endBox.getText() + "' " +
                         "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
             }
 
