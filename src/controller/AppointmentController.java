@@ -51,14 +51,15 @@ public class AppointmentController implements Initializable {
      */
     boolean isUtc = true;
     boolean isLocal = false;
-    boolean isMonthly;
-    boolean isWeekly;
-    boolean isAll;
 
     /**
      * ***********************
      */
 
+    /**
+     * changes menu to the add appointment menu
+     * @throws IOException
+     */
     public void addAppointment() throws IOException {
         System.out.println(userData.getUsername());
         Stage stage;
@@ -73,6 +74,10 @@ public class AppointmentController implements Initializable {
         addAppointment.setCompareList(compareList);
     }
 
+    /**
+     * changes menu to the update appointment menu
+     * @throws IOException
+     */
     public void updateAppointment() throws IOException {
         Stage stage;
         Parent root;
@@ -87,6 +92,10 @@ public class AppointmentController implements Initializable {
         updateAppointment.setCompareList(compareList);
     }
 
+    /**
+     * changes menu to customer menu
+     * @throws IOException
+     */
     public void customerButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -99,6 +108,10 @@ public class AppointmentController implements Initializable {
         CustomerController customerController = loader.getController();
     }
 
+    /**
+     * will delete selected appointment
+     * @throws SQLException
+     */
     public void onDeleteClicked() throws SQLException {
         int id = appointmentTable.getSelectionModel().getSelectedItem().getAppointmentId();
 
@@ -115,6 +128,10 @@ public class AppointmentController implements Initializable {
 
     }
 
+    /**
+     * will create a pop up message with customer information that is selected
+     * @throws SQLException
+     */
     public void customerDetailButtonClicked() throws SQLException {
         Customer customer = new Customer();
         Statement statement;
@@ -149,10 +166,18 @@ public class AppointmentController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * used to keep track of current user
+     * @param user
+     */
     public void setUserData(User user) {
         userData = user;
     }
 
+    /**
+     * populates appointment table with all appointments
+     * @throws SQLException
+     */
     public void populateList() throws SQLException {
         Statement statement;
         ResultSet result;
@@ -182,6 +207,9 @@ public class AppointmentController implements Initializable {
 
     }
 
+    /**
+     * changes appointment times to local time based on system default
+     */
     public void clickLocal() {
         if (!isLocal) {
             List<Appointment> tempList = new ArrayList<>(appointmentList);
@@ -201,6 +229,9 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * changes appointment times that are displayed to UTC time
+     */
     public void clickUtc() {
         if (!isUtc) {
             List<Appointment> tempList = new ArrayList<>(appointmentList);
@@ -220,6 +251,10 @@ public class AppointmentController implements Initializable {
         }
     }
 
+    /**
+     * views all appointments in current week
+     * @throws SQLException
+     */
     public void appointmentWeek() throws SQLException {
         clickUtc();
         List<Appointment> tempList = new ArrayList<>();
@@ -240,6 +275,10 @@ public class AppointmentController implements Initializable {
         appointmentList.addAll(tempList);
     }
 
+    /**
+     * views all appointments in current month
+     * @throws SQLException
+     */
     public void appointmentMonth() throws SQLException {
         clickUtc();
         List<Appointment> tempList = new ArrayList<>();
@@ -260,6 +299,10 @@ public class AppointmentController implements Initializable {
         appointmentList.addAll(tempList);
     }
 
+    /**
+     * views all appointments in the database
+     * @throws SQLException
+     */
     public void appointmentAll() throws SQLException {
         clickUtc();
         appointmentList.add(new Appointment());
@@ -268,6 +311,10 @@ public class AppointmentController implements Initializable {
         populateList();
     }
 
+    /**
+     * goes to report menu
+     * @throws IOException
+     */
     public void clickReport() throws IOException {
         System.out.println(userData.getUsername());
         Stage stage;

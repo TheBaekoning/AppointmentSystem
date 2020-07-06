@@ -39,6 +39,11 @@ public class CustomerController implements Initializable {
     private List<Customer> customerList = new ArrayList<>();
     private final ObservableList<Customer> customerListObservable = FXCollections.observableList(customerList);
 
+    /**
+     * populates customer list and table
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -54,6 +59,10 @@ public class CustomerController implements Initializable {
         customerTable.setItems(customerListObservable);
     }
 
+    /**
+     * returns to appointment menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -65,6 +74,10 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * goes to add customer menu
+     * @throws IOException
+     */
     public void addCustomerClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -76,6 +89,11 @@ public class CustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * goes to update customer menu
+     * @throws IOException
+     * @throws SQLException
+     */
     public void updateCustomerClicked() throws IOException, SQLException {
         Stage stage;
         Parent root;
@@ -89,6 +107,10 @@ public class CustomerController implements Initializable {
         updateCustomerController.setCustomer(customerTable.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * deletes selected customer from the table and database
+     * @throws SQLException
+     */
     public void deleteCustomerClicked() throws SQLException {
         customerTable.getSelectionModel().getSelectedItem();
         long count = 0L;
@@ -162,6 +184,10 @@ public class CustomerController implements Initializable {
         }
     }
 
+    /**
+     * populates table from database
+     * @throws SQLException
+     */
     public void populateTable() throws SQLException {
         Statement statement;
         ResultSet result;

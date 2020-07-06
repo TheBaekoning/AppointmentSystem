@@ -38,6 +38,10 @@ public class UpdateAppointment implements Initializable {
 
     TimeConverter time = new TimeConverter();
 
+    /**
+     * returns to appointment menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -49,10 +53,19 @@ public class UpdateAppointment implements Initializable {
         stage.show();
     }
 
+    /**
+     * used to set appointment that was selected
+     * @param appointment
+     */
     public void setAppointment(Appointment appointment) {
         this.appointment = appointment;
     }
 
+    /**
+     * updates appointment based on input values. This will throw an error and message if date is invalid or overlapping
+     * @throws SQLException
+     * @throws IOException
+     */
     public void onClickUpdate() throws SQLException, IOException {
         try {
             for (int i = 0; i < compareList.size(); i++)

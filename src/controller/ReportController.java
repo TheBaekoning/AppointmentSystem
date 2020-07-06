@@ -49,7 +49,10 @@ public class ReportController implements Initializable {
     @FXML
     Text userText;
 
-
+    /**
+     * returns to appointment menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -61,6 +64,11 @@ public class ReportController implements Initializable {
         stage.show();
     }
 
+    /**
+     * reports on different types of appointments in database
+     * @return
+     * @throws SQLException
+     */
     public int differentTypeReport() throws SQLException {
         Statement statement;
         ResultSet result;
@@ -76,6 +84,11 @@ public class ReportController implements Initializable {
         return resultInt;
     }
 
+    /**
+     * reports on total number of stored appointments in database
+     * @return
+     * @throws SQLException
+     */
     public int totalAppointments() throws SQLException {
         Statement statement;
         ResultSet result;
@@ -91,6 +104,10 @@ public class ReportController implements Initializable {
         return resultInt;
     }
 
+    /**
+     * populates appointments for particular user
+     * @throws SQLException
+     */
     public void createSchedule() throws SQLException {
         appointmentList.clear();
         appointmentObservableList.clear();
@@ -121,6 +138,10 @@ public class ReportController implements Initializable {
         connection.close();
     }
 
+    /**
+     * generates report numbers for different types, total appointments and the list
+     * @throws SQLException
+     */
     public void generateReport() throws SQLException {
         differentText.setText("Total Different Types Of Appointments: " + differentTypeReport());
         totalText.setText("Total Number Of Appointments In Database: " + totalAppointments());
@@ -133,6 +154,10 @@ public class ReportController implements Initializable {
         appointmentTable.setItems(appointmentObservableList);
     }
 
+    /**
+     * populates schedule list for user selected
+     * @throws SQLException
+     */
     public void populateList() throws SQLException {
         Statement statement;
         ResultSet result;
@@ -163,11 +188,7 @@ public class ReportController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
-
         userColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
-
         userTable.setItems(userListObservable);
     }
 }

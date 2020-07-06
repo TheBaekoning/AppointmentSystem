@@ -21,7 +21,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddAppointment implements Initializable {
     @FXML
@@ -42,6 +41,10 @@ public class AddAppointment implements Initializable {
     public TableView<Appointment> customerTable;
     public TableColumn nameColumn;
 
+    /**
+     * Returns to the appointment menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -53,6 +56,12 @@ public class AddAppointment implements Initializable {
         stage.show();
     }
 
+    /**
+     * Attempts to add a new appointment to the Database. Will throw exceptions if time overlaps or if
+     * time is an invalid format
+     * @throws Exception
+     * @throws CustomException
+     */
     public void onClickAddAppointment() throws Exception, CustomException {
         TimeConverter time = new TimeConverter();
 
@@ -90,6 +99,11 @@ public class AddAppointment implements Initializable {
         }
     }
 
+    /**
+     * populates customer table to be used when creating appointment
+     * @param location
+     * @param resources
+     */
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -125,6 +139,10 @@ public class AddAppointment implements Initializable {
 
     }
 
+    /**
+     * used to set the comparison list for overlapping times
+     * @param appointments
+     */
     public void setCompareList(List<Appointment> appointments) {
         compareList.addAll(appointments);
     }

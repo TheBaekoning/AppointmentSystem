@@ -50,6 +50,10 @@ public class UpdateCustomerController implements Initializable {
     private List<String> countryList = new ArrayList<>();
     private List<String> cityList = new ArrayList<>();
 
+    /**
+     * returns to customer menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -61,6 +65,10 @@ public class UpdateCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * selection drop down menu for country
+     * @throws SQLException
+     */
     public void clickedCountryDropDown() throws SQLException {
         if (!cityList.isEmpty()) {
             cityList.clear();
@@ -83,6 +91,11 @@ public class UpdateCustomerController implements Initializable {
         connection.close();
     }
 
+    /**
+     * sets the text boxes to reflect selected customer that will be updated
+     * @param customer
+     * @throws SQLException
+     */
     public void setCustomer(Customer customer) throws SQLException {
 
         ResultSet addressResult, idResult;
@@ -118,6 +131,11 @@ public class UpdateCustomerController implements Initializable {
 
     }
 
+    /**
+     * will attempt to update customer into the data base
+     * @throws SQLException
+     * @throws IOException
+     */
     public void clickedUpdateButton() throws SQLException, IOException {
         String time = new TimeConverter().getUtcTime();
         Statement statement;

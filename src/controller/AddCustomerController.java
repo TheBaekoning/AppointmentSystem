@@ -45,6 +45,10 @@ public class AddCustomerController implements Initializable {
     private List<String> countryList = new ArrayList<>();
     private List<String> cityList = new ArrayList<>();
 
+    /**
+     * returns to customer menu
+     * @throws IOException
+     */
     public void cancelButtonClicked() throws IOException {
         Stage stage;
         Parent root;
@@ -56,6 +60,10 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * checks if customer name inputted is a valid entry
+     * @throws CustomException
+     */
     public void checkCustomerName() throws CustomException {
         if(!((nameBox.getText().equals(""))
                 && (nameBox.getText() != null)
@@ -69,6 +77,13 @@ public class AddCustomerController implements Initializable {
         }
     }
 
+    /**
+     * attempts to add a customer to the database. It will add a new address if the inputted address does
+     * not exist
+     * @throws SQLException
+     * @throws IOException
+     * @throws CustomException
+     */
     public void addCustomer() throws SQLException, IOException, CustomException {
         checkCustomerName();
         Statement statement;
@@ -117,6 +132,10 @@ public class AddCustomerController implements Initializable {
 
     }
 
+    /**
+     * selects country and will auto populate city based on country
+     * @throws SQLException
+     */
     public void clickedCountryDropDown() throws SQLException {
         if (!cityList.isEmpty()) {
             cityList.clear();
@@ -139,6 +158,11 @@ public class AddCustomerController implements Initializable {
         connection.close();
     }
 
+    /**
+     * populates the country drop down to be used
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Statement statement;

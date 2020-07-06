@@ -11,14 +11,27 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TimeConverter {
+    /**
+     * gets current system local time
+     * @return
+     */
     public String getLocalTime() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
+    /**
+     * gets current UTC time
+     * @return
+     */
     public String getUtcTime() {
         return LocalDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
     }
 
+    /**
+     * converts system time to UTC
+     * @param time
+     * @return
+     */
     public String convertDefaultToUtc(String time) {
         return ZonedDateTime
                 .parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()))
@@ -27,6 +40,11 @@ public class TimeConverter {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * converts UTC to system time
+     * @param time
+     * @return
+     */
     public String convertUtcToDefault(String time) {
         return ZonedDateTime
                 .parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC))
@@ -35,6 +53,11 @@ public class TimeConverter {
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
+    /**
+     * checks if date is in a valid form
+     * @param validate
+     * @throws DateTimeParseException
+     */
     public void isValidDate(String validate) throws DateTimeParseException {
         try {
             LocalDateTime.parse(validate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -47,6 +70,11 @@ public class TimeConverter {
         }
     }
 
+    /**
+     * checks if time is within busines hours
+     * @param validate
+     * @throws Exception
+     */
     public void isBusinessHours(String validate) throws Exception {
         int compare = Integer.parseInt(LocalDateTime.parse(validate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("HH")));
         int opening = Integer.parseInt(LocalTime.parse("09:00:00", DateTimeFormatter.ofPattern("HH:mm:ss")).format(DateTimeFormatter.ofPattern("HH")));
@@ -61,6 +89,11 @@ public class TimeConverter {
         }
     }
 
+    /**
+     * checks if date within the current month
+     * @param validate
+     * @return
+     */
     public boolean isCurrentMonth(String validate) {
         String newValidate = LocalDateTime.parse(validate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).format(DateTimeFormatter.ofPattern("yyyy-MM"));
         String localDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
@@ -68,6 +101,11 @@ public class TimeConverter {
         return localDate.equals(newValidate);
     }
 
+    /**
+     * checks if date is witnin current week
+     * @param validate
+     * @return
+     */
     public boolean isCurrentWeek(String validate) {
         int day, month, year; // comparing dates
         int cDay, cMonth, cYear; // current dates
@@ -92,10 +130,25 @@ public class TimeConverter {
         return compWeek == currentWeek;
     }
 
+    /**
+     * converts date and time into ZoneDateTime object
+     * @param time
+     * @return
+     * @throws ParseException
+     */
     private ZonedDateTime dateConverter(String time) throws ParseException {
         return ZonedDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()));
     }
 
+    /**
+     * uses converted date time ZoneDateTime object to see if time overlaps
+     * @param time1Start
+     * @param time1End
+     * @param time2Start
+     * @param time2End
+     * @throws ParseException
+     * @throws CustomException
+     */
     public void isOverlap(String time1Start, String time1End, String time2Start, String time2End) throws ParseException, CustomException {
         ZonedDateTime date1;
         ZonedDateTime date2;
