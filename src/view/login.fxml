@@ -10,8 +10,8 @@
    <children>
       <TextField fx:id="loginUser" layoutX="46.0" layoutY="114.0" />
       <PasswordField fx:id="loginPassword" layoutX="320.0" layoutY="114.0" />
-      <Text layoutX="46.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" />
-      <Text layoutX="320.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+      <Text fx:id="userText" layoutX="46.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name" />
+      <Text fx:id="passwordText" layoutX="320.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
       <Button fx:id="loginButton" layoutX="46.0" layoutY="194.0" mnemonicParsing="false" onAction="#loginValidation" text="Login" />
    </children>
 </AnchorPane>

@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import util.TimeConverter;
 
+import java.util.Locale;
+
 public class Main extends Application {
 
     @Override
@@ -16,6 +18,8 @@ public class Main extends Application {
 
         TimeConverter time = new TimeConverter();
         String current = "2020-07-12";
+
+
 
         System.out.println(time.isCurrentWeek(current));
     }

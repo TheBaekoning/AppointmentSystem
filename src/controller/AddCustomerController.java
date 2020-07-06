@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AddCustomerController implements Initializable {
@@ -47,6 +48,7 @@ public class AddCustomerController implements Initializable {
 
     /**
      * returns to customer menu
+     *
      * @throws IOException
      */
     public void cancelButtonClicked() throws IOException {
@@ -62,30 +64,70 @@ public class AddCustomerController implements Initializable {
 
     /**
      * checks if customer name inputted is a valid entry
+     *
      * @throws CustomException
      */
-    public void checkCustomerName() throws CustomException {
-        if(!((nameBox.getText().equals(""))
-                && (nameBox.getText() != null)
-                && (nameBox.getText().matches("^[a-zA-Z]*$")))) {
+    private void checkCustomerName() throws CustomException {
+        if (((nameBox.getText().equals("")) && (nameBox.getText() != null))
+                || !(Objects.requireNonNull(nameBox.getText()).matches("[a-zA-Z]+\\s[a-zA-Z]+"))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Characters for Customer Name");
-            alert.setHeaderText("Customer name must have only alphabets");
+            alert.setHeaderText("Customer name must have only alphabets and form: <First Name> <Last Name>");
             alert.setContentText("Please enter a valid name and try again");
             alert.showAndWait();
             throw (new CustomException("INVALID CHARACTERS"));
         }
     }
 
+    private void checkPostal() throws CustomException {
+        if (((zipBox.getText().equals("")) && (zipBox.getText() != null))
+                || !(Objects.requireNonNull(zipBox.getText()).matches("[0-9]+"))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Postal Code");
+            alert.setHeaderText("Postal name must have only numbers");
+            alert.setContentText("Please enter a valid postal and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS"));
+        }
+    }
+
+    private void checkPhone() throws CustomException {
+        if (((phoneBox.getText().equals("")) && (phoneBox.getText() != null))
+                || !(Objects.requireNonNull(phoneBox.getText()).matches
+                ("^\\d{3}([\\s-])\\d{4}$"))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Phone");
+            alert.setHeaderText("Postal name must have only numberse in form 222-3333");
+            alert.setContentText("Please enter a valid phone and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS AND FORM"));
+        }
+    }
+
+    private void checkAddress() throws CustomException {
+        if ((addressBox.getText().equals("")) || (addressBox.getText() == null)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Adresss cannot be blank");
+            alert.setHeaderText("There needs to be a value for address");
+            alert.setContentText("Please enter a valid address and try again");
+            alert.showAndWait();
+            throw (new CustomException("Address is empty"));
+        }
+    }
+
     /**
      * attempts to add a customer to the database. It will add a new address if the inputted address does
      * not exist
+     *
      * @throws SQLException
      * @throws IOException
      * @throws CustomException
      */
     public void addCustomer() throws SQLException, IOException, CustomException {
         checkCustomerName();
+        checkPostal();
+        checkPhone();
+        checkAddress();
         Statement statement;
         ResultSet result, cityResult;
         int cityId;
@@ -134,6 +176,7 @@ public class AddCustomerController implements Initializable {
 
     /**
      * selects country and will auto populate city based on country
+     *
      * @throws SQLException
      */
     public void clickedCountryDropDown() throws SQLException {
@@ -160,6 +203,7 @@ public class AddCustomerController implements Initializable {
 
     /**
      * populates the country drop down to be used
+     *
      * @param location
      * @param resources
      */

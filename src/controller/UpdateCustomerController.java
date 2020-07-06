@@ -7,11 +7,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Customer;
+import util.CustomException;
 import util.TimeConverter;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class UpdateCustomerController implements Initializable {
@@ -132,11 +135,86 @@ public class UpdateCustomerController implements Initializable {
     }
 
     /**
+     * checks if customer name inputted is a valid entry
+     *
+     * @throws CustomException
+     */
+    private void checkCustomerName() throws CustomException, SQLException {
+        if (((nameBox.getText().equals("")) && (nameBox.getText() != null))
+                || !(Objects.requireNonNull(nameBox.getText()).matches("[a-zA-Z]+\\s[a-zA-Z]+"))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Customer Name");
+            alert.setHeaderText("Customer name must have only alphabets and form: <First Name> <Last Name>");
+            alert.setContentText("Please enter a valid name and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS"));
+        }
+        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                "U0600d", "53688664081");
+        Statement statement;
+        statement = connection.createStatement();
+        ResultSet result = statement.executeQuery("SELECT customerName, customerId " +
+                "FROM customer WHERE customerName = '" + nameBox.getText() + "'");
+
+        if(!result.next()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Customer is Non-Existent");
+            alert.setHeaderText("Customer does not exist, please check that name is correct and try again");
+            alert.setContentText("Please enter a valid name and try again");
+            alert.showAndWait();
+            throw (new CustomException("CUSTOMER DOES NOT EXIST"));
+        } else {
+            customerId = result.getInt("customerId");
+        }
+
+    }
+
+    private void checkPostal() throws CustomException {
+        if (((zipBox.getText().equals("")) && (zipBox.getText() != null))
+                || !(Objects.requireNonNull(zipBox.getText()).matches("[0-9]+"))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Postal Code");
+            alert.setHeaderText("Postal name must have only numbers");
+            alert.setContentText("Please enter a valid postal and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS"));
+        }
+    }
+
+    private void checkPhone() throws CustomException {
+        if (((phoneBox.getText().equals("")) && (phoneBox.getText() != null))
+                || !(Objects.requireNonNull(phoneBox.getText()).matches
+                ("^\\d{3}([\\s-])\\d{4}$"))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Phone");
+            alert.setHeaderText("Postal name must have only numberse in form 222-3333");
+            alert.setContentText("Please enter a valid phone and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS AND FORM"));
+        }
+    }
+
+    private void checkAddress() throws CustomException {
+        if ((addressBox.getText().equals("")) || (addressBox.getText() == null)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Adresss cannot be blank");
+            alert.setHeaderText("There needs to be a value for address");
+            alert.setContentText("Please enter a valid address and try again");
+            alert.showAndWait();
+            throw (new CustomException("Address is empty"));
+        }
+    }
+
+    /**
      * will attempt to update customer into the data base
      * @throws SQLException
      * @throws IOException
      */
-    public void clickedUpdateButton() throws SQLException, IOException {
+    public void clickedUpdateButton() throws SQLException, IOException, CustomException {
+        checkCustomerName();
+        checkPostal();
+        checkPhone();
+        checkAddress();
         String time = new TimeConverter().getUtcTime();
         Statement statement;
         Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",

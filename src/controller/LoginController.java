@@ -2,11 +2,13 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.User;
 import util.TimeConverter;
@@ -14,16 +16,23 @@ import util.TimeConverter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController implements Initializable {
     @FXML
     Button loginButton;
     @FXML
     TextField loginUser;
     @FXML
     TextField loginPassword;
+    @FXML
+    Text userText;
+    @FXML
+    Text passwordText;
+    boolean isFrench = false;
 
     @FXML
 
@@ -95,18 +104,20 @@ public class LoginController {
     }
 
     /**
-    * Pop up message if the username and password does not match to one held in Database. Will currently match US or FR (english / french)
+     * Pop up message if the username and password does not match to one held in Database. Will currently match US or FR (english / french)
      */
     private void popMessage() {
-        Locale currentLocale = Locale.getDefault()   ;
-        if (currentLocale.getCountry().equals("US")); {
+        Locale currentLocale = Locale.getDefault();
+        if (currentLocale.getCountry().equals("US")) ;
+        {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Incorrect Password");
             alert.setHeaderText("Username And Password Incorrect");
             alert.setContentText("Please Try Again");
             alert.showAndWait();
 
-        };
+        }
+        ;
         if (currentLocale.getCountry().equals("FR")) {
             System.out.println(currentLocale.getCountry());
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -114,6 +125,18 @@ public class LoginController {
             alert.setHeaderText("Nom d'utilisateur et mot de passe incorrects");
             alert.setContentText("Veuillez réessayer");
             alert.showAndWait();
+        }
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Locale currentLocale = Locale.getDefault();
+        if (currentLocale.getCountry().equals("FR")) {
+            userText.setText("Nom d'utilisateur");
+            passwordText.setText("mot de passe");
+            loginButton.setText("s'identifier");
+
         }
 
     }
