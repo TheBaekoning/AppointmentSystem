@@ -7,24 +7,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointment;
+import util.CustomException;
 import util.TimeConverter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AddAppointment implements Initializable {
     @FXML
@@ -38,6 +35,7 @@ public class AddAppointment implements Initializable {
     @FXML
     TextField typeBox;
 
+    List<Appointment> compareList = new ArrayList<>();
     List<Appointment> appointmentList = new ArrayList<>();
     private final ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(appointmentList);
 
@@ -55,28 +53,41 @@ public class AddAppointment implements Initializable {
         stage.show();
     }
 
-    public void onClickAddAppointment() throws SQLException, IOException, DateTimeParseException, Exception {
+    public void onClickAddAppointment() throws Exception, CustomException {
         TimeConverter time = new TimeConverter();
-        Statement statement;
-        Appointment selectedAppointment = new Appointment();
-        selectedAppointment = customerTable.getSelectionModel().getSelectedItem();
 
-        time.isValidDate(startBox.getText());
-        time.isValidDate(endBox.getText());
-        time.isBusinessHours(startBox.getText());
-        time.isBusinessHours(endBox.getText());
+        try {
+            for (int i = 0; i < compareList.size(); i++)
+                time.isOverlap(startBox.getText(), endBox.getText(), compareList.get(i).getStartTime(), compareList.get(i).getEndTime());
 
-        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
-                "U0600d", "53688664081");
+            Statement statement;
+            Appointment selectedAppointment = new Appointment();
+            selectedAppointment = customerTable.getSelectionModel().getSelectedItem();
 
-        statement = connection.createStatement();
-        statement.execute("INSERT INTO appointment(customerId, userId, type, start, end, createDate, createdBy, lastUpdate, lastUpdateBy, title, description, location, contact, url)\n" +
-                "VALUES(" + selectedAppointment.getCustomerId() + ", " + AppointmentController.userData.getUserId()
-                + ", '" + typeBox.getText() + "', '" + time.convertDefaultToUtc(startBox.getText()) + "', '" + time.convertDefaultToUtc(endBox.getText())
-                + "', '" + time.getUtcTime() + "', '" + AppointmentController.userData + "', '"
-                + time.getUtcTime() + "', '" + AppointmentController.userData
-                + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "');");
-        cancelButtonClicked();
+            time.isValidDate(startBox.getText());
+            time.isValidDate(endBox.getText());
+            time.isBusinessHours(startBox.getText());
+            time.isBusinessHours(endBox.getText());
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                    "U0600d", "53688664081");
+
+            statement = connection.createStatement();
+            statement.execute("INSERT INTO appointment(customerId, userId, type, start, end, createDate, createdBy, lastUpdate, lastUpdateBy, title, description, location, contact, url)\n" +
+                    "VALUES(" + selectedAppointment.getCustomerId() + ", " + AppointmentController.userData.getUserId()
+                    + ", '" + typeBox.getText() + "', '" + time.convertDefaultToUtc(startBox.getText()) + "', '" + time.convertDefaultToUtc(endBox.getText())
+                    + "', '" + time.getUtcTime() + "', '" + AppointmentController.userData + "', '"
+                    + time.getUtcTime() + "', '" + AppointmentController.userData
+                    + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "', '" + "blank" + "');");
+            cancelButtonClicked();
+
+        } catch (ParseException | CustomException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Overlapping Time");
+            alert.setHeaderText("Start Time Overlaps With Existing appointment");
+            alert.setContentText("Please enter a valid time and try again");
+            alert.showAndWait();
+        }
     }
 
 
@@ -100,7 +111,6 @@ public class AddAppointment implements Initializable {
 
                 appointment.setName(result.getString("customerName"));
                 appointment.setCustomerId(result.getInt("customerId"));
-
                 appointmentList.add(appointment);
             }
 
@@ -113,5 +123,9 @@ public class AddAppointment implements Initializable {
 
         customerTable.setItems(appointmentObservableList);
 
+    }
+
+    public void setCompareList(List<Appointment> appointments) {
+        compareList.addAll(appointments);
     }
 }

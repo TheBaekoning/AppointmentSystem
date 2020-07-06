@@ -41,6 +41,7 @@ public class AppointmentController implements Initializable {
     public TableColumn appointmentColumn;
     public TableColumn typeColumn;
 
+    private List<Appointment> compareList = new ArrayList<>();
     private List<Appointment> appointmentList = new ArrayList<>();
     private final ObservableList<Appointment> appointmentObservableList = FXCollections.observableList(appointmentList);
 
@@ -69,6 +70,7 @@ public class AppointmentController implements Initializable {
         stage.setScene(scene);
         stage.show();
         AddAppointment addAppointment = loader.getController();
+        addAppointment.setCompareList(compareList);
     }
 
     public void updateAppointment() throws IOException {
@@ -82,7 +84,7 @@ public class AppointmentController implements Initializable {
         stage.show();
         UpdateAppointment updateAppointment = loader.getController();
         updateAppointment.setAppointment(appointmentTable.getSelectionModel().getSelectedItem());
-
+        updateAppointment.setCompareList(compareList);
     }
 
     public void customerButtonClicked() throws IOException {
@@ -182,7 +184,7 @@ public class AppointmentController implements Initializable {
     }
 
     public void clickLocal() {
-        if(!isLocal){
+        if (!isLocal) {
             List<Appointment> tempList = new ArrayList<>(appointmentList);
             appointmentObservableList.clear();
             appointmentList.clear();
@@ -201,7 +203,7 @@ public class AppointmentController implements Initializable {
     }
 
     public void clickUtc() {
-        if(!isUtc) {
+        if (!isUtc) {
             List<Appointment> tempList = new ArrayList<>(appointmentList);
             appointmentObservableList.clear();
             appointmentList.clear();
@@ -229,7 +231,7 @@ public class AppointmentController implements Initializable {
         populateList();
 
         appointmentList.forEach(x -> {
-            if(time.isCurrentWeek(x.getStartTime()))
+            if (time.isCurrentWeek(x.getStartTime()))
                 tempList.add(x);
         });
 
@@ -249,7 +251,7 @@ public class AppointmentController implements Initializable {
         populateList();
 
         appointmentList.forEach(x -> {
-            if(time.isCurrentMonth(x.getStartTime()))
+            if (time.isCurrentMonth(x.getStartTime()))
                 tempList.add(x);
         });
 
@@ -267,6 +269,18 @@ public class AppointmentController implements Initializable {
         populateList();
     }
 
+    public void clickReport() throws IOException {
+        System.out.println(userData.getUsername());
+        Stage stage;
+        Parent root;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/report.fxml"));
+        stage = (Stage) addButton.getScene().getWindow();
+        root = loader.load();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -274,6 +288,8 @@ public class AppointmentController implements Initializable {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        compareList.addAll(appointmentList);
 
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         appointmentColumn.setCellValueFactory(new PropertyValueFactory<>("appointment"));

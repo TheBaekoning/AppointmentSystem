@@ -1,14 +1,12 @@
 package util;
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import javafx.scene.control.Alert;
 
-import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.WeekFields;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -92,5 +90,23 @@ public class TimeConverter {
         int currentWeek = cDate.get(weekNumbering.weekOfWeekBasedYear());
 
         return compWeek == currentWeek;
+    }
+
+    private ZonedDateTime dateConverter(String time) throws ParseException {
+        return ZonedDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault()));
+    }
+
+    public void isOverlap(String time1Start, String time1End, String time2Start, String time2End) throws ParseException, CustomException {
+        ZonedDateTime date1;
+        ZonedDateTime date2;
+        ZonedDateTime date3;
+        ZonedDateTime date4;
+
+        date1 = dateConverter(time1Start);
+        date2 = dateConverter(time1End);
+        date3 = dateConverter(time2Start);
+        date4 = dateConverter(time2End);
+        if(date1.isBefore(date4) && date3.isBefore(date2))
+            throw(new CustomException("OVERLAPPING TIME"));
     }
 }

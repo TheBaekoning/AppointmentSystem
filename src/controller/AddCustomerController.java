@@ -7,10 +7,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import util.CustomException;
 import util.TimeConverter;
 
 import java.io.IOException;
@@ -54,7 +56,21 @@ public class AddCustomerController implements Initializable {
         stage.show();
     }
 
-    public void addCustomer() throws SQLException, IOException {
+    public void checkCustomerName() throws CustomException {
+        if(!((nameBox.getText().equals(""))
+                && (nameBox.getText() != null)
+                && (nameBox.getText().matches("^[a-zA-Z]*$")))) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Characters for Customer Name");
+            alert.setHeaderText("Customer name must have only alphabets");
+            alert.setContentText("Please enter a valid name and try again");
+            alert.showAndWait();
+            throw (new CustomException("INVALID CHARACTERS"));
+        }
+    }
+
+    public void addCustomer() throws SQLException, IOException, CustomException {
+        checkCustomerName();
         Statement statement;
         ResultSet result, cityResult;
         int cityId;

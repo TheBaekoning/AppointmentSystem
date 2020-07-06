@@ -17,7 +17,7 @@
       <Button fx:id="deleteButton" layoutX="806.0" layoutY="145.0" mnemonicParsing="false" onAction="#onDeleteClicked" prefHeight="26.0" prefWidth="73.0" text="Delete" />
       <Button fx:id="localButton" layoutX="50.0" layoutY="466.0" mnemonicParsing="false" onAction="#clickLocal" text="Local" />
       <Button fx:id="utcButton" layoutX="133.0" layoutY="466.0" mnemonicParsing="false" onAction="#clickUtc" prefHeight="26.0" prefWidth="55.0" text="UTC" />
-      <Button layoutX="808.0" layoutY="270.0" mnemonicParsing="false" text="Reports" />
+      <Button layoutX="808.0" layoutY="270.0" mnemonicParsing="false" onAction="#clickReport" text="Reports" />
       <Button fx:id="customerButton" layoutX="806.0" layoutY="204.0" mnemonicParsing="false" onAction="#customerButtonClicked" prefHeight="26.0" prefWidth="105.0" text="Customers" />
       <TableView fx:id="appointmentTable" layoutX="50.0" layoutY="53.0" prefHeight="321.0" prefWidth="730.0">
         <columns>

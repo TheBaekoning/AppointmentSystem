@@ -5,15 +5,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Appointment;
+import util.CustomException;
 import util.TimeConverter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UpdateAppointment implements Initializable {
@@ -28,6 +33,7 @@ public class UpdateAppointment implements Initializable {
     @FXML
     TextField typeBox;
 
+    List<Appointment> compareList = new ArrayList<>();
     Appointment appointment = new Appointment();
 
     TimeConverter time = new TimeConverter();
@@ -48,35 +54,46 @@ public class UpdateAppointment implements Initializable {
     }
 
     public void onClickUpdate() throws SQLException, IOException {
-        time.isValidDate(startBox.getText());
-        time.isValidDate(endBox.getText());
-        Statement statement;
-        Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
-                "U0600d", "53688664081");
+        try {
+            for (int i = 0; i < compareList.size(); i++)
+                time.isOverlap(startBox.getText(), endBox.getText(), compareList.get(i).getStartTime(), compareList.get(i).getEndTime());
 
-        statement = connection.createStatement();
-        if(!typeBox.getText().isEmpty()){
+            time.isValidDate(startBox.getText());
+            time.isValidDate(endBox.getText());
+            Statement statement;
+            Connection connection = DriverManager.getConnection("jdbc:mysql://3.227.166.251/U0600d",
+                    "U0600d", "53688664081");
+
+            statement = connection.createStatement();
+            if (!typeBox.getText().isEmpty()) {
+                statement.execute("UPDATE appointment \n" +
+                        "SET type = '" + typeBox.getText() + "' " +
+                        "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
+            }
+
+            if (!startBox.getText().isEmpty()) {
+                statement.execute("UPDATE appointment \n" +
+                        "SET start = '" + time.convertDefaultToUtc(startBox.getText()) + "' " +
+                        "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
+            }
+
+            if (!endBox.getText().isEmpty()) {
+                statement.execute("UPDATE appointment \n" +
+                        "SET end = '" + time.convertDefaultToUtc(endBox.getText()) + "' " +
+                        "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
+            }
+
             statement.execute("UPDATE appointment \n" +
-                    "SET type = '" + typeBox.getText() + "' " +
+                    "SET lastUpdateBy = '" + AppointmentController.userData.getUsername() + "', lastUpdate = '" + time.getUtcTime() + "' " +
                     "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
+            cancelButtonClicked();
+        } catch (ParseException | CustomException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Overlapping Time");
+            alert.setHeaderText("Start Time Overlaps With Existing appointment");
+            alert.setContentText("Please enter a valid time and try again");
+            alert.showAndWait();
         }
-
-        if(!startBox.getText().isEmpty()){
-            statement.execute("UPDATE appointment \n" +
-                    "SET start = '" + time.convertDefaultToUtc(startBox.getText()) + "' " +
-                    "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
-        }
-
-        if(!endBox.getText().isEmpty()){
-            statement.execute("UPDATE appointment \n" +
-                    "SET end = '" + time.convertDefaultToUtc(endBox.getText()) + "' " +
-                    "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
-        }
-
-        statement.execute("UPDATE appointment \n" +
-                "SET lastUpdateBy = '" + AppointmentController.userData.getUsername() + "', lastUpdate = '" + time.getUtcTime() + "' " +
-                "WHERE appointmentId = " + appointment.getAppointmentId() + " ;");
-        cancelButtonClicked();
 
     }
 
@@ -114,5 +131,9 @@ public class UpdateAppointment implements Initializable {
             throwables.printStackTrace();
         }
 
+    }
+
+    public void setCompareList(List<Appointment> appointments) {
+        compareList.addAll(appointments);
     }
 }
