@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="671.0" prefWidth="1255.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ReportController">
+   <children>
+      <TableView fx:id="appointmentTable" layoutX="75.0" layoutY="53.0" prefHeight="328.0" prefWidth="525.0">
+         <columns>
+            <TableColumn fx:id="appointmentColumn" minWidth="5.0" prefWidth="365.0" text="Appointment Time" />
+            <TableColumn fx:id="typeColumn" minWidth="5.0" prefWidth="159.0" text="Type" />
+         </columns>
+      </TableView>
+      <Button fx:id="cancelButton" layoutX="1120.0" layoutY="593.0" mnemonicParsing="false" onAction="#cancelButtonClicked" text="Cancel" />
+      <Button layoutX="75.0" layoutY="593.0" mnemonicParsing="false" onAction="#generateReport" text="Generate Report" />
+      <TableView fx:id="userTable" layoutX="818.0" layoutY="60.0" prefHeight="321.0" prefWidth="206.0">
+         <columns>
+            <TableColumn fx:id="userColumn" prefWidth="205.0" text="User" />
+         </columns>
+      </TableView>
+      <Text fx:id="totalText" layoutX="75.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Number Of Appointments In Database: " />
+      <Text fx:id="differentText" layoutX="75.0" layoutY="495.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Different Types Of Appointments: " />
+      <Text fx:id="userText" layoutX="75.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Schedule For User: " />
+   </children>
+</AnchorPane>
