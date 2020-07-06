@@ -9,7 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.User;
+import util.TimeConverter;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Locale;
@@ -61,6 +64,29 @@ public class LoginController {
             userData.setUsername(result.getString("userName"));
             userData.setUserId(result.getInt("userId"));
             appointmentController.setUserData(userData);
+
+            try {
+                File log = new File("user_login_logs.txt");
+                if (log.createNewFile()) {
+                    System.out.println("File created: " + log.getName());
+                } else {
+                    System.out.println("File already exists.");
+                }
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+            try {
+                FileWriter fileWriter = new FileWriter("user_login_logs.txt");
+                fileWriter.write("USER: " + userData.getUsername() + " LOGGED AT: " + new TimeConverter().getUtcTime());
+                fileWriter.close();
+                System.out.println("Successfully wrote to the file.");
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
         } else {
             popMessage();
         }

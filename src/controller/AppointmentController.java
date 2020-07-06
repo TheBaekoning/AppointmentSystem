@@ -176,7 +176,6 @@ public class AppointmentController implements Initializable {
             appointment.setStartTime(result.getString("start"));
             appointment.setEndTime(result.getString("end"));
             appointmentList.add(appointment);
-            System.out.println(appointmentObservableList.size());
         }
 
         connection.close();
